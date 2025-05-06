@@ -98,7 +98,7 @@
             background: var(--dungeon-primary);
             color: white;
             padding: 10px 20px;
-			margin-bottom: 30px;
+            margin-bottom: 30px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -189,7 +189,7 @@
             font-size: 1.5rem;
             cursor: pointer;
             position: absolute;
-            right: 0;
+            right: 20px;
             top: -40px;
         }
 
@@ -199,24 +199,45 @@
 
         .breaking-news {
             margin-bottom: 40px;
+            position: relative;
         }
 
         .news-slider {
             display: flex;
             gap: 20px;
             overflow-x: auto;
-            padding-bottom: 20px;
+            padding: 20px 10px;
             scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            margin: 0 -10px;
+        }
+
+        .news-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .news-slider::after {
+            content: '→';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dungeon-highlight);
+            font-size: 1.5rem;
+            animation: bounceRight 2s infinite;
+            display: none;
         }
 
         .news-card {
-            min-width: 300px;
+            min-width: calc(100% - 40px);
             background: rgba(51, 51, 51, 0.8);
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
             scroll-snap-align: start;
+            flex-shrink: 0;
         }
 
         .news-card:hover {
@@ -525,15 +546,6 @@
             margin-bottom: 5px;
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px var(--dungeon-highlight);
-            }
-            to {
-                text-shadow: 0 0 15px var(--dungeon-accent), 0 0 20px var(--dungeon-primary);
-            }
-        }
-
         .upcoming-releases {
             margin-bottom: 40px;
         }
@@ -559,15 +571,15 @@
         }
         
         .release-date {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            position: static;
+            display: inline-block;
             background: var(--dungeon-primary);
             color: white;
             padding: 5px 10px;
             border-radius: 5px;
             font-family: 'Press Start 2P', cursive;
             font-size: 0.6rem;
+            margin-bottom: 10px;
         }
         
         .release-card img {
@@ -602,6 +614,27 @@
             padding: 3px 8px;
             border-radius: 3px;
             font-size: 0.7rem;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--dungeon-highlight);
+            }
+            to {
+                text-shadow: 0 0 15px var(--dungeon-accent), 0 0 20px var(--dungeon-primary);
+            }
+        }
+
+        @keyframes bounceRight {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(-50%) translateX(0);
+            }
+            40% {
+                transform: translateY(-50%) translateX(10px);
+            }
+            60% {
+                transform: translateY(-50%) translateX(5px);
+            }
         }
 
         @media (max-width: 992px) {
@@ -669,19 +702,38 @@
                 padding: 8px;
                 font-size: 0.6rem;
             }
+
+            .news-slider::after {
+                display: block;
+            }
+
+            .news-card {
+                min-width: calc(100% - 40px);
+                margin: 0 10px;
+            }
         }
 
         @media (max-width: 576px) {
-            .news-slider {
-                grid-template-columns: 1fr;
-            }
-            
-            .news-card {
-                min-width: 100%;
-            }
-            
             .footer-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .news-slider {
+                padding: 20px 15px;
+                margin: 0 -15px;
+            }
+
+            .news-card {
+                min-width: calc(100% - 30px);
+            }
+
+            .release-date {
+                position: static;
+                margin-bottom: 10px;
             }
         }
     </style>
@@ -714,7 +766,7 @@
                 <h2><i class="fas fa-bolt"></i> Última Hora</h2>
                 <div class="news-slider">
                     <article class="news-card">
-                        <img src="https://ucarecdn.com/f4846867-37a8-4dc8-8eda-365602ab2238/EldenRingNightrain.webp" alt="Novo DLC de Elden Ring">
+                        <img src="Shadow-of-the-Erdtree-todo-lo-que-sabemos-hasta-ahora.jpg" alt="Novo DLC de Elden Ring">
                         <div class="news-content">
                             <h3>Novo DLC de Elden Ring anunciado!</h3>
                             <p>FromSoftware revela expansão com 30 horas de conteúdo adicional.</p>
@@ -722,7 +774,7 @@
                         </div>
                     </article>
                     <article class="news-card">
-                        <img src="https://ucarecdn.com/6ea035b2-1524-4e62-b117-3810f89d69e6/GTA6rumoaumadiamentopara20261536x864.jpg" alt="GTA 6 Delay">
+                        <img src="GTA-6-rumo-a-um-adiamento-para-2026-1536x864.jpg" alt="GTA 6 Delay">
                         <div class="news-content">
                             <h3>GTA 6 pode ser adiado para 2026</h3>
                             <p>Vazamentos indicam problemas no desenvolvimento.</p>
@@ -736,7 +788,7 @@
                 <section class="main-content">
                     <article class="featured-post">
                         <h2><i class="fas fa-crown"></i> Destaque da Semana</h2>
-                        <img src="https://ucarecdn.com/ecb0546a-96c3-4829-b354-2d80ff216ca5/EGS_HogwartsLegacy_AvalancheSoftware.jpg" alt="Review Hogwarts Legacy 2">
+                        <img src="EGS_HogwartsLegacy_AvalancheSoftware.jpg" alt="Review Hogwarts Legacy 2">
                         <div class="post-content">
                             <h3>Review: Hogwarts Legacy 2 supera expectativas</h3>
                             <p class="post-meta">Por Alvo Dumbledore - 2 dias atrás</p>
@@ -747,7 +799,7 @@
 
                     <div class="posts-grid">
                         <article class="post-card">
-                            <img src="https://ucarecdn.com/b334474c-0db1-45db-8fbd-28d29fe6cfad/TearsoftheKingdomwallpaper.jpg" alt="Guia Zelda">
+                            <img src="Tears-of-the-Kingdom-wallpaper.jpg" alt="Guia Zelda">
                             <div class="post-content">
                                 <h3>Guia completo: Todos os santuários em Zelda Tears of the Kingdom</h3>
                                 <p>Mapeamos todos os 152 santuários com localizações e soluções.</p>
@@ -755,7 +807,7 @@
                             </div>
                         </article>
                         <article class="post-card">
-                            <img src="https://ucarecdn.com/c22ee9d2-cce0-46b6-ab80-5a298a2f8e1e/chronotriggeraltfeaturescaled.jpg" alt="Retro Games">
+                            <img src="chronotriggeraltfeature-scaled.jpg" alt="Retro Games">
                             <div class="post-content">
                                 <h3>Retrô: A história não contada do desenvolvimento de Chrono Trigger</h3>
                                 <p>Entrevistas exclusivas com a equipe original.</p>
@@ -778,7 +830,7 @@
                     <section class="deals">
                         <h3><i class="fas fa-coins"></i> Ofertas Quentes</h3>
                         <div class="deal-item">
-                            <img src="https://ucarecdn.com/e378cbcb-104c-4c4f-b50a-ea1481d9a45a/EGS_TheWitcher3WildHuntGameoftheYearEdition_CDPROJEKTRED_S2_1200x160053a8fb2c0201cd8aea410f2a049aba3f.jpeg" alt="Desconto">
+                            <img src="EGS_TheWitcher3WildHuntGameoftheYearEdition_CDPROJEKTRED_S2_1200x1600-53a8fb2c0201cd8aea410f2a049aba3f.jpeg" alt="Desconto">
                             <div>
                                 <h4>The Witcher 3</h4>
                                 <p class="price">R$ 29,99 <span>R$ 119,99</span></p>
@@ -786,7 +838,7 @@
                             </div>
                         </div>
                         <div class="deal-item">
-                            <img src="https://ucarecdn.com/c23f8dde-a643-4429-8992-9800c37899ec/rdr2.jpg" alt="Desconto">
+                            <img src="rdr2.jpg" alt="Desconto">
                             <div>
                                 <h4>Red Dead Redemption 2</h4>
                                 <p class="price">R$ 89,90 <span>R$ 229,90</span></p>
@@ -854,68 +906,64 @@
                     </div>
                 </div>
             </section>
+        
+            <section class="upcoming-releases">
+                <h2><i class="fas fa-calendar-alt"></i> Próximos Lançamentos</h2>
+                <div class="releases-grid">
+                    <article class="release-card">
+                        <div class="release-content">
+                            <span class="release-date">15/06/2024</span>
+                            <h3>Black Myth: Wukong</h3>
+                            <p>Um RPG de ação baseado na mitologia chinesa com combates desafiadores.</p>
+                            <div class="release-platforms">
+                                <span class="release-platform">PS5</span>
+                                <span class="release-platform">Xbox</span>
+                                <span class="release-platform">PC</span>
+                            </div>
+                            <a href="#" class="btn">Mais informações</a>
+                        </div>
+                    </article>
+                    
+                    <article class="release-card">
+                        <div class="release-content">
+                            <span class="release-date">22/08/2024</span>
+                            <h3>Starfield: Shattered Space</h3>
+                            <p>A primeira grande expansão do RPG espacial da Bethesda.</p>
+                            <div class="release-platforms">
+                                <span class="release-platform">Xbox</span>
+                                <span class="release-platform">PC</span>
+                            </div>
+                            <a href="#" class="btn">Mais informações</a>
+                        </div>
+                    </article>
+                    
+                    <article class="release-card">
+                        <div class="release-content">
+                            <span class="release-date">10/10/2024</span>
+                            <h3>Metroid Prime 4</h3>
+                            <p>O tão aguardado retorno de Samus em primeira pessoa.</p>
+                            <div class="release-platforms">
+                                <span class="release-platform">Switch</span>
+                            </div>
+                            <a href="#" class="btn">Mais informações</a>
+                        </div>
+                    </article>
+                    
+                    <article class="release-card">
+                        <div class="release-content">
+                            <span class="release-date">05/12/2024</span>
+                            <h3>Avowed</h3>
+                            <p>Novo RPG de mundo aberto dos criadores de Pillars of Eternity.</p>
+                            <div class="release-platforms">
+                                <span class="release-platform">Xbox</span>
+                                <span class="release-platform">PC</span>
+                            </div>
+                            <a href="#" class="btn">Mais informações</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
         </main>
-		
-		    <section class="upcoming-releases container">
-        <h2><i class="fas fa-calendar-alt"></i> Próximos Lançamentos</h2>
-        <div class="releases-grid">
-            <article class="release-card">
-                <span class="release-date">15/06/2024</span>
-                
-                <div class="release-content">
-                  <h3>Black Myth: Wukong</h3>
-                    <p>Um RPG de ação baseado na mitologia chinesa com combates desafiadores.</p>
-                    <div class="release-platforms">
-                        <span class="release-platform">PS5</span>
-                        <span class="release-platform">Xbox</span>
-                        <span class="release-platform">PC</span>
-                    </div>
-                    <a href="#" class="btn">Mais informações</a>
-                </div>
-            </article>
-            
-            <article class="release-card">
-                <span class="release-date">22/08/2024</span>
-                
-                <div class="release-content">
-                  <h3>Starfield: Shattered Space</h3>
-                    <p>A primeira grande expansão do RPG espacial da Bethesda.</p>
-                    <div class="release-platforms">
-                        <span class="release-platform">Xbox</span>
-                        <span class="release-platform">PC</span>
-                    </div>
-                    <a href="#" class="btn">Mais informações</a>
-                </div>
-            </article>
-            
-            <article class="release-card">
-                <span class="release-date">10/10/2024</span>
-                
-                <div class="release-content">
-                  <h3>Metroid Prime 4</h3>
-                    <p>O tão aguardado retorno de Samus em primeira pessoa.</p>
-                    <div class="release-platforms">
-                        <span class="release-platform">Switch</span>
-                    </div>
-                    <a href="#" class="btn">Mais informações</a>
-                </div>
-            </article>
-            
-            <article class="release-card">
-                <span class="release-date">05/12/2024</span>
-               
-                <div class="release-content">
-                  <h3>Avowed</h3>
-                    <p>Novo RPG de mundo aberto dos criadores de Pillars of Eternity.</p>
-                    <div class="release-platforms">
-                        <span class="release-platform">Xbox</span>
-                        <span class="release-platform">PC</span>
-                    </div>
-                    <a href="#" class="btn">Mais informações</a>
-                </div>
-            </article>
-        </div>
-    </section>
 
         <footer class="dungeon-footer">
             <div class="container">
@@ -1031,6 +1079,14 @@
                 const dungeonBg = document.querySelector('.dungeon-bg');
                 
                 dungeonBg.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+            });
+
+            // Remover seta de scroll após o usuário interagir
+            newsSlider.addEventListener('scroll', function() {
+                const arrow = document.querySelector('.news-slider::after');
+                if (arrow) {
+                    arrow.style.display = 'none';
+                }
             });
         });
     </script>
