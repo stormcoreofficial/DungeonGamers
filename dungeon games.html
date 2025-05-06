@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DungeonGamer - Seu Portal de Jogos</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --dungeon-dark: #1a1a1a;
+            --dungeon-primary: #8b0000;
+            --dungeon-secondary: #5e0000;
+            --dungeon-accent: #ff6b00;
+            --dungeon-text: #e0e0e0;
+            --dungeon-light: #333333;
+            --dungeon-highlight: #ffd700;
+            --dungeon-stone: #444444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'MedievalSharp', cursive;
+            background-color: var(--dungeon-dark);
+            color: var(--dungeon-text);
+            line-height: 1.6;
+        }
+
+        .dungeon-bg {
+            background-image: url('https://via.placeholder.com/1920x1080/111/333?text=Dungeon+Texture');
+            background-attachment: fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        .dungeon-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--dungeon-highlight);
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--dungeon-primary);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: var(--dungeon-accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--dungeon-highlight);
+            text-shadow: 0 0 5px var(--dungeon-highlight);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--dungeon-primary);
+            color: white;
+            padding: 10px 20px;
+			margin-bottom: 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--dungeon-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 0.6rem;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dungeon-header {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 10px 0;
+            border-bottom: 3px solid var(--dungeon-primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            color: var(--dungeon-highlight);
+            text-shadow: 3px 3px 0 var(--dungeon-primary);
+            animation: glow 2s infinite alternate;
+        }
+
+        .logo p {
+            font-family: 'MedievalSharp', cursive;
+            color: var(--dungeon-text);
+            font-size: 1rem;
+        }
+
+        .dungeon-nav {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--dungeon-text);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: var(--dungeon-primary);
+            color: white;
+        }
+
+        .nav-links a i {
+            margin-right: 5px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dungeon-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: -40px;
+        }
+
+        .dungeon-main {
+            padding: 30px 0;
+        }
+
+        .breaking-news {
+            margin-bottom: 40px;
+        }
+
+        .news-slider {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .news-card {
+            min-width: 300px;
+            background: rgba(51, 51, 51, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            scroll-snap-align: start;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .news-content {
+            padding: 15px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .featured-post {
+            background: rgba(51, 51, 51, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .featured-post:hover {
+            transform: scale(1.01);
+        }
+
+        .featured-post img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .post-content {
+            padding: 20px;
+        }
+
+        .post-meta {
+            color: var(--dungeon-accent);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .post-card {
+            background: rgba(51, 51, 51, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .post-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .post-card .post-content {
+            padding: 15px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .newsletter {
+            background: rgba(51, 51, 51, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--dungeon-stone);
+            background: var(--dungeon-dark);
+            color: var(--dungeon-text);
+            font-family: 'MedievalSharp', cursive;
+        }
+
+        .deals {
+            background: rgba(51, 51, 51, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .deal-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--dungeon-stone);
+        }
+
+        .deal-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .price {
+            color: var(--dungeon-highlight);
+            font-weight: bold;
+        }
+
+        .price span {
+            color: var(--dungeon-text);
+            text-decoration: line-through;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        .platform {
+            font-size: 0.8rem;
+            color: var(--dungeon-accent);
+        }
+
+        .platforms {
+            background: rgba(51, 51, 51, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .platform-icon {
+            font-size: 2rem;
+            color: var(--dungeon-text);
+            transition: all 0.3s ease;
+            padding: 15px;
+            background: rgba(26, 26, 26, 0.5);
+            border-radius: 10px;
+        }
+
+        .platform-icon:hover {
+            color: var(--dungeon-accent);
+            transform: scale(1.2);
+            background: rgba(139, 0, 0, 0.3);
+        }
+
+        .curiosities {
+            margin-bottom: 40px;
+        }
+
+        .curiosities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .curiosity-card {
+            background: rgba(51, 51, 51, 0.8);
+            border-radius: 10px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .curiosity-front, .curiosity-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: transform 0.6s;
+            border-radius: 10px;
+        }
+
+        .curiosity-front {
+            background: var(--dungeon-primary);
+            transform: rotateY(0deg);
+        }
+
+        .curiosity-back {
+            background: var(--dungeon-secondary);
+            transform: rotateY(180deg);
+        }
+
+        .curiosity-card:hover .curiosity-front {
+            transform: rotateY(180deg);
+        }
+
+        .curiosity-card:hover .curiosity-back {
+            transform: rotateY(360deg);
+        }
+
+        .curiosity-card i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--dungeon-highlight);
+        }
+
+        .dungeon-footer {
+            background: rgba(26, 26, 26, 0.95);
+            padding: 40px 0 20px;
+            border-top: 3px solid var(--dungeon-primary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-about p {
+            font-size: 0.9rem;
+        }
+
+        .footer-links h3, .footer-social h3 {
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--dungeon-text);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--dungeon-accent);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--dungeon-light);
+            border-radius: 50%;
+            color: var(--dungeon-text);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--dungeon-primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--dungeon-stone);
+            font-size: 0.8rem;
+        }
+
+        .footer-bottom p {
+            margin-bottom: 5px;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--dungeon-highlight);
+            }
+            to {
+                text-shadow: 0 0 15px var(--dungeon-accent), 0 0 20px var(--dungeon-primary);
+            }
+        }
+
+        .upcoming-releases {
+            margin-bottom: 40px;
+        }
+        
+        .releases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .release-card {
+            background: rgba(51, 51, 51, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .release-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .release-date {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--dungeon-primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+        }
+        
+        .release-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .release-content {
+            padding: 15px;
+        }
+        
+        .release-content h3 {
+            margin-bottom: 10px;
+        }
+        
+        .release-content p {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .release-platforms {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .release-platform {
+            background: var(--dungeon-dark);
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 992px) {
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .platform-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(26, 26, 26, 0.95);
+                padding: 10px 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+                gap: 10px;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .curiosities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dungeon-header {
+                padding: 5px 0;
+            }
+
+            .logo {
+                margin-bottom: 5px;
+            }
+
+            .logo h1 {
+                font-size: 1.5rem;
+                margin-bottom: 5px;
+            }
+
+            .logo p {
+                font-size: 0.8rem;
+            }
+
+            .nav-links a {
+                padding: 8px;
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .news-slider {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-card {
+                min-width: 100%;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dungeon-bg">
+        <header class="dungeon-header">
+            <div class="container">
+                <div class="logo">
+                    <h1><i class="fas fa-dungeon"></i> DungeonGamer</h1>
+                    <p>Explore os segredos do mundo dos jogos</p>
+                </div>
+                <nav class="dungeon-nav">
+                    <button class="mobile-menu-btn" aria-label="Menu Mobile">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <ul class="nav-links">
+                        <li><a href="#"><i class="fas fa-home"></i> Início</a></li>
+                        <li><a href="#"><i class="fas fa-newspaper"></i> Notícias</a></li>
+                        <li><a href="#"><i class="fas fa-tags"></i> Ofertas</a></li>
+                        <li><a href="#"><i class="fas fa-question-circle"></i> Curiosidades</a></li>
+                        <li><a href="#"><i class="fas fa-gamepad"></i> Plataformas</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container dungeon-main">
+            <section class="breaking-news">
+                <h2><i class="fas fa-bolt"></i> Última Hora</h2>
+                <div class="news-slider">
+                    <article class="news-card">
+                        <img src="https://ucarecdn.com/f4846867-37a8-4dc8-8eda-365602ab2238/EldenRingNightrain.webp" alt="Novo DLC de Elden Ring">
+                        <div class="news-content">
+                            <h3>Novo DLC de Elden Ring anunciado!</h3>
+                            <p>FromSoftware revela expansão com 30 horas de conteúdo adicional.</p>
+                            <a href="#" class="btn">Leia mais</a>
+                        </div>
+                    </article>
+                    <article class="news-card">
+                        <img src="https://ucarecdn.com/6ea035b2-1524-4e62-b117-3810f89d69e6/GTA6rumoaumadiamentopara20261536x864.jpg" alt="GTA 6 Delay">
+                        <div class="news-content">
+                            <h3>GTA 6 pode ser adiado para 2026</h3>
+                            <p>Vazamentos indicam problemas no desenvolvimento.</p>
+                            <a href="#" class="btn">Leia mais</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <div class="content-grid">
+                <section class="main-content">
+                    <article class="featured-post">
+                        <h2><i class="fas fa-crown"></i> Destaque da Semana</h2>
+                        <img src="https://ucarecdn.com/ecb0546a-96c3-4829-b354-2d80ff216ca5/EGS_HogwartsLegacy_AvalancheSoftware.jpg" alt="Review Hogwarts Legacy 2">
+                        <div class="post-content">
+                            <h3>Review: Hogwarts Legacy 2 supera expectativas</h3>
+                            <p class="post-meta">Por Alvo Dumbledore - 2 dias atrás</p>
+                            <p>O tão aguardado Hogwarts Legacy 2 chegou e trouxe consigo uma experiência mágica ampliada...</p>
+                            <a href="#" class="btn">Continue lendo</a>
+                        </div>
+                    </article>
+
+                    <div class="posts-grid">
+                        <article class="post-card">
+                            <img src="https://ucarecdn.com/b334474c-0db1-45db-8fbd-28d29fe6cfad/TearsoftheKingdomwallpaper.jpg" alt="Guia Zelda">
+                            <div class="post-content">
+                                <h3>Guia completo: Todos os santuários em Zelda Tears of the Kingdom</h3>
+                                <p>Mapeamos todos os 152 santuários com localizações e soluções.</p>
+                                <a href="#" class="btn">Ver guia</a>
+                            </div>
+                        </article>
+                        <article class="post-card">
+                            <img src="https://ucarecdn.com/c22ee9d2-cce0-46b6-ab80-5a298a2f8e1e/chronotriggeraltfeaturescaled.jpg" alt="Retro Games">
+                            <div class="post-content">
+                                <h3>Retrô: A história não contada do desenvolvimento de Chrono Trigger</h3>
+                                <p>Entrevistas exclusivas com a equipe original.</p>
+                                <a href="#" class="btn">Leia mais</a>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <aside class="sidebar">
+                    <section class="newsletter">
+                        <h3><i class="fas fa-scroll"></i> Newsletter</h3>
+                        <p>Assine e receba as melhores notícias e ofertas diretamente no seu email!</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Seu melhor email" required>
+                            <button type="submit" class="btn">Assinar</button>
+                        </form>
+                    </section>
+
+                    <section class="deals">
+                        <h3><i class="fas fa-coins"></i> Ofertas Quentes</h3>
+                        <div class="deal-item">
+                            <img src="https://ucarecdn.com/e378cbcb-104c-4c4f-b50a-ea1481d9a45a/EGS_TheWitcher3WildHuntGameoftheYearEdition_CDPROJEKTRED_S2_1200x160053a8fb2c0201cd8aea410f2a049aba3f.jpeg" alt="Desconto">
+                            <div>
+                                <h4>The Witcher 3</h4>
+                                <p class="price">R$ 29,99 <span>R$ 119,99</span></p>
+                                <p class="platform">Steam</p>
+                            </div>
+                        </div>
+                        <div class="deal-item">
+                            <img src="https://ucarecdn.com/c23f8dde-a643-4429-8992-9800c37899ec/rdr2.jpg" alt="Desconto">
+                            <div>
+                                <h4>Red Dead Redemption 2</h4>
+                                <p class="price">R$ 89,90 <span>R$ 229,90</span></p>
+                                <p class="platform">Epic Games</p>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-small">Ver todas ofertas</a>
+                    </section>
+
+                    <section class="platforms">
+                        <h3><i class="fas fa-chess-rook"></i> Plataformas</h3>
+                        <div class="platform-grid">
+                            <a href="#" class="platform-icon" title="Steam">
+                                <i class="fab fa-steam"></i>
+                            </a>
+                            <a href="#" class="platform-icon" title="Xbox">
+                                <i class="fab fa-xbox"></i>
+                            </a>
+                            <a href="#" class="platform-icon" title="PlayStation">
+                                <i class="fab fa-playstation"></i>
+                            </a>
+                            <a href="#" class="platform-icon" title="Nintendo">
+                                <i class="fas fa-gamepad"></i>
+                            </a>
+                            <a href="#" class="platform-icon" title="Epic Games">
+                                <i class="fas fa-ghost"></i>
+                            </a>
+                            <a href="#" class="platform-icon" title="GOG">
+                                <i class="fas fa-dragon"></i>
+                            </a>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+
+            <section class="curiosities">
+                <h2><i class="fas fa-book-dead"></i> Curiosidades Obscuras</h2>
+                <div class="curiosities-grid">
+                    <div class="curiosity-card">
+                        <div class="curiosity-front">
+                            <i class="fas fa-question"></i>
+                            <h3>Sabia que...</h3>
+                        </div>
+                        <div class="curiosity-back">
+                            <p>O personagem Sonic foi originalmente concebido para ter um visual mais adulto e dentes afiados?</p>
+                        </div>
+                    </div>
+                    <div class="curiosity-card">
+                        <div class="curiosity-front">
+                            <i class="fas fa-question"></i>
+                            <h3>Você conhecia...</h3>
+                        </div>
+                        <div class="curiosity-back">
+                            <p>O jogo Diablo quase foi lançado em cartucho para Nintendo 64, mas o projeto foi cancelado?</p>
+                        </div>
+                    </div>
+                    <div class="curiosity-card">
+                        <div class="curiosity-front">
+                            <i class="fas fa-question"></i>
+                            <h3>Um segredo...</h3>
+                        </div>
+                        <div class="curiosity-back">
+                            <p>Há uma sala secreta em Castlevania: Symphony of the Night que só pode ser acessada transformando-se em morcego e passando por uma parede invisível?</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+		
+		    <section class="upcoming-releases container">
+        <h2><i class="fas fa-calendar-alt"></i> Próximos Lançamentos</h2>
+        <div class="releases-grid">
+            <article class="release-card">
+                <span class="release-date">15/06/2024</span>
+                
+                <div class="release-content">
+                  <h3>Black Myth: Wukong</h3>
+                    <p>Um RPG de ação baseado na mitologia chinesa com combates desafiadores.</p>
+                    <div class="release-platforms">
+                        <span class="release-platform">PS5</span>
+                        <span class="release-platform">Xbox</span>
+                        <span class="release-platform">PC</span>
+                    </div>
+                    <a href="#" class="btn">Mais informações</a>
+                </div>
+            </article>
+            
+            <article class="release-card">
+                <span class="release-date">22/08/2024</span>
+                
+                <div class="release-content">
+                  <h3>Starfield: Shattered Space</h3>
+                    <p>A primeira grande expansão do RPG espacial da Bethesda.</p>
+                    <div class="release-platforms">
+                        <span class="release-platform">Xbox</span>
+                        <span class="release-platform">PC</span>
+                    </div>
+                    <a href="#" class="btn">Mais informações</a>
+                </div>
+            </article>
+            
+            <article class="release-card">
+                <span class="release-date">10/10/2024</span>
+                
+                <div class="release-content">
+                  <h3>Metroid Prime 4</h3>
+                    <p>O tão aguardado retorno de Samus em primeira pessoa.</p>
+                    <div class="release-platforms">
+                        <span class="release-platform">Switch</span>
+                    </div>
+                    <a href="#" class="btn">Mais informações</a>
+                </div>
+            </article>
+            
+            <article class="release-card">
+                <span class="release-date">05/12/2024</span>
+               
+                <div class="release-content">
+                  <h3>Avowed</h3>
+                    <p>Novo RPG de mundo aberto dos criadores de Pillars of Eternity.</p>
+                    <div class="release-platforms">
+                        <span class="release-platform">Xbox</span>
+                        <span class="release-platform">PC</span>
+                    </div>
+                    <a href="#" class="btn">Mais informações</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+        <footer class="dungeon-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-about">
+                        <h3><i class="fas fa-dungeon"></i> DungeonGamer</h3>
+                        <p>Explorando as profundezas do mundo dos jogos desde 2023. Trazendo notícias, análises e os melhores segredos para você, aventureiro!</p>
+                    </div>
+                    <div class="footer-links">
+                        <h3>Mapa do Site</h3>
+                        <ul>
+                            <li><a href="#">Início</a></li>
+                            <li><a href="#">Notícias</a></li>
+                            <li><a href="#">Reviews</a></li>
+                            <li><a href="#">Guias</a></li>
+                            <li><a href="#">Ofertas</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-social">
+                        <h3>Siga-nos</h3>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                            <a href="#"><i class="fab fa-discord"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2023 DungeonGamer - Todos os direitos reservados</p>
+                    <p>Desenvolvido com <i class="fas fa-heart"></i> para gamers</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu mobile
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            menuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.querySelector('i').classList.toggle('fa-times');
+                this.querySelector('i').classList.toggle('fa-bars');
+            });
+            
+            // Slider de notícias
+            const newsSlider = document.querySelector('.news-slider');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            newsSlider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - newsSlider.offsetLeft;
+                scrollLeft = newsSlider.scrollLeft;
+            });
+            
+            newsSlider.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+            
+            newsSlider.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+            
+            newsSlider.addEventListener('mousemove', (e) => {
+                if(!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - newsSlider.offsetLeft;
+                const walk = (x - startX) * 2;
+                newsSlider.scrollLeft = scrollLeft - walk;
+            });
+            
+            // Efeito de hover nos cards
+            const cards = document.querySelectorAll('.post-card, .news-card, .featured-post');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const x = e.clientX - this.getBoundingClientRect().left;
+                    const y = e.clientY - this.getBoundingClientRect().top;
+                    
+                    const centerX = this.offsetWidth / 2;
+                    const centerY = this.offsetHeight / 2;
+                    
+                    const angleX = (y - centerY) / 10;
+                    const angleY = (centerX - x) / 10;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                });
+            });
+            
+            // Animação de scroll suave
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Efeito parallax
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.pageYOffset;
+                const dungeonBg = document.querySelector('.dungeon-bg');
+                
+                dungeonBg.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+            });
+        });
+    </script>
+</body>
+</html>
