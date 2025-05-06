@@ -229,7 +229,7 @@
             display: none;
         }
 
-        .news-card {
+            .news-card {
             min-width: calc(100% - 40px);
             background: rgba(51, 51, 51, 0.8);
             border-radius: 10px;
@@ -240,14 +240,16 @@
             flex-shrink: 0;
         }
 
+
         .news-card:hover {
             transform: translateY(-10px);
         }
 
         .news-card img {
-            width: 100%;
-            height: auto;
-            display: block;
+        width: 100%;
+        height: 200px; /* Altura fija para desktop */
+        object-fit: cover;
+        display: block;
         }
 
         .news-content {
@@ -711,6 +713,11 @@
                 min-width: calc(100% - 40px);
                 margin: 0 10px;
             }
+
+            .news-card img {
+            height: 160px; /* Altura ligeramente menor para móvil */
+            }
+            
         }
 
         @media (max-width: 576px) {
